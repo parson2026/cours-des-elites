@@ -1,0 +1,991 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MathPhys Elite — Cours en Ligne 3ème & Terminale</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #0a0a14;
+    --paper: #f5f3ee;
+    --gold: #e8b84b;
+    --gold-light: #f5d98a;
+    --blue: #1a3a6b;
+    --blue-mid: #2a5aab;
+    --blue-light: #e8eef8;
+    --red: #c0392b;
+    --green: #1a7a4a;
+    --muted: #8a8a9a;
+    --border: #d8d5cc;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--paper);
+    color: var(--ink);
+    overflow-x: hidden;
+  }
+
+  /* ─── NAV ─── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 1rem 3rem;
+    background: rgba(245,243,238,0.92);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+  }
+  .nav-logo {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800; font-size: 1.4rem;
+    color: var(--blue);
+    display: flex; align-items: center; gap: 0.5rem;
+  }
+  .nav-logo span { color: var(--gold); }
+  .nav-links { display: flex; gap: 2rem; list-style: none; }
+  .nav-links a {
+    font-size: 0.9rem; font-weight: 500;
+    color: var(--ink); text-decoration: none;
+    transition: color 0.2s;
+  }
+  .nav-links a:hover { color: var(--blue-mid); }
+  .nav-cta {
+    background: var(--blue);
+    color: white !important;
+    padding: 0.5rem 1.25rem;
+    border-radius: 4px;
+    font-weight: 600 !important;
+    transition: background 0.2s !important;
+  }
+  .nav-cta:hover { background: var(--blue-mid) !important; color: white !important; }
+
+  /* ─── HERO ─── */
+  .hero {
+    min-height: 100vh;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    padding-top: 80px;
+    overflow: hidden;
+    position: relative;
+  }
+  .hero::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: 
+      radial-gradient(ellipse 60% 80% at 75% 50%, rgba(26,58,107,0.06) 0%, transparent 70%),
+      repeating-linear-gradient(0deg, transparent, transparent 79px, rgba(0,0,0,0.04) 79px, rgba(0,0,0,0.04) 80px),
+      repeating-linear-gradient(90deg, transparent, transparent 79px, rgba(0,0,0,0.04) 79px, rgba(0,0,0,0.04) 80px);
+    pointer-events: none;
+  }
+  .hero-left {
+    padding: 5rem 3rem 4rem 3rem;
+    display: flex; flex-direction: column; justify-content: center;
+    position: relative; z-index: 1;
+  }
+  .hero-badge {
+    display: inline-flex; align-items: center; gap: 0.5rem;
+    background: var(--gold-light);
+    color: var(--ink);
+    padding: 0.35rem 0.9rem;
+    border-radius: 2px;
+    font-size: 0.78rem; font-weight: 600;
+    letter-spacing: 0.08em; text-transform: uppercase;
+    margin-bottom: 1.5rem;
+    width: fit-content;
+  }
+  .hero-title {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(2.8rem, 5vw, 4.2rem);
+    font-weight: 800;
+    line-height: 1.05;
+    margin-bottom: 1.5rem;
+    letter-spacing: -0.02em;
+  }
+  .hero-title .accent { color: var(--blue-mid); }
+  .hero-title .underline-gold {
+    position: relative;
+    display: inline-block;
+  }
+  .hero-title .underline-gold::after {
+    content: '';
+    position: absolute; bottom: -4px; left: 0; right: 0; height: 6px;
+    background: var(--gold);
+    border-radius: 2px;
+  }
+  .hero-desc {
+    font-size: 1.1rem; line-height: 1.7;
+    color: #3a3a4a; max-width: 480px;
+    margin-bottom: 2.5rem;
+    font-weight: 300;
+  }
+  .hero-actions { display: flex; gap: 1rem; flex-wrap: wrap; }
+  .btn-primary {
+    background: var(--blue);
+    color: white;
+    padding: 0.85rem 2rem;
+    border: none; border-radius: 4px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 1rem; font-weight: 600;
+    cursor: pointer; text-decoration: none;
+    display: inline-flex; align-items: center; gap: 0.5rem;
+    transition: all 0.2s; box-shadow: 0 4px 16px rgba(26,58,107,0.3);
+  }
+  .btn-primary:hover { background: var(--blue-mid); transform: translateY(-2px); box-shadow: 0 8px 24px rgba(26,58,107,0.35); }
+  .btn-secondary {
+    background: transparent;
+    color: var(--blue);
+    padding: 0.85rem 2rem;
+    border: 2px solid var(--blue);
+    border-radius: 4px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 1rem; font-weight: 600;
+    cursor: pointer; text-decoration: none;
+    display: inline-flex; align-items: center; gap: 0.5rem;
+    transition: all 0.2s;
+  }
+  .btn-secondary:hover { background: var(--blue-light); }
+
+  .hero-stats {
+    display: flex; gap: 2.5rem; margin-top: 3rem;
+    padding-top: 2rem; border-top: 1px solid var(--border);
+  }
+  .stat-item { display: flex; flex-direction: column; }
+  .stat-num {
+    font-family: 'Syne', sans-serif;
+    font-size: 1.8rem; font-weight: 800;
+    color: var(--blue);
+  }
+  .stat-label { font-size: 0.8rem; color: var(--muted); font-weight: 500; }
+
+  .hero-right {
+    position: relative;
+    display: flex; align-items: center; justify-content: center;
+    padding: 2rem;
+    overflow: hidden;
+  }
+  .hero-right::before {
+    content: '';
+    position: absolute; top: 10%; right: -5%; width: 500px; height: 500px;
+    background: radial-gradient(circle, rgba(26,58,107,0.12) 0%, transparent 70%);
+    border-radius: 50%;
+  }
+
+  .formula-board {
+    background: var(--blue);
+    border-radius: 8px;
+    padding: 2.5rem;
+    width: 100%; max-width: 460px;
+    color: white;
+    box-shadow: 0 24px 60px rgba(26,58,107,0.4), inset 0 1px 0 rgba(255,255,255,0.1);
+    position: relative; z-index: 1;
+    animation: float 6s ease-in-out infinite;
+  }
+  @keyframes float {
+    0%,100% { transform: translateY(0); }
+    50% { transform: translateY(-12px); }
+  }
+  .board-tabs {
+    display: flex; gap: 0; margin-bottom: 1.5rem;
+    border-bottom: 1px solid rgba(255,255,255,0.15);
+  }
+  .board-tab {
+    padding: 0.5rem 1rem;
+    font-size: 0.85rem; font-weight: 600;
+    cursor: pointer; color: rgba(255,255,255,0.5);
+    border-bottom: 2px solid transparent;
+    margin-bottom: -1px;
+    transition: all 0.2s;
+  }
+  .board-tab.active { color: var(--gold); border-color: var(--gold); }
+  .formula-line {
+    font-family: 'DM Mono', monospace;
+    font-size: 1.1rem;
+    padding: 0.6rem 0;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+    display: flex; justify-content: space-between; align-items: center;
+    animation: fadeSlide 0.5s ease both;
+  }
+  .formula-line:last-child { border: none; }
+  .formula-line .label { font-size: 0.72rem; color: rgba(255,255,255,0.4); text-transform: uppercase; letter-spacing: 0.06em; }
+  .formula-line .expr { font-size: 1rem; color: var(--gold-light); }
+  .formula-line .cat { font-size: 0.72rem; background: rgba(255,255,255,0.1); padding: 0.2rem 0.5rem; border-radius: 2px; }
+  @keyframes fadeSlide { from { opacity: 0; transform: translateX(-10px); } to { opacity: 1; transform: none; } }
+
+  /* ─── LEVELS ─── */
+  .section {
+    padding: 5rem 3rem;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  .section-label {
+    font-size: 0.78rem; font-weight: 600;
+    letter-spacing: 0.1em; text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 0.6rem;
+  }
+  .section-title {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(1.8rem, 3vw, 2.6rem);
+    font-weight: 800;
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+    margin-bottom: 1rem;
+  }
+  .section-sub {
+    font-size: 1.05rem; color: var(--muted);
+    max-width: 580px; line-height: 1.6;
+    margin-bottom: 3rem;
+    font-weight: 300;
+  }
+
+  .levels-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+  }
+  .level-card {
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 2rem;
+    background: white;
+    transition: all 0.3s;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+  }
+  .level-card::before {
+    content: '';
+    position: absolute; top: 0; left: 0; width: 4px; height: 100%;
+    background: var(--blue);
+    transition: width 0.3s;
+  }
+  .level-card.tle::before { background: var(--gold); }
+  .level-card:hover::before { width: 100%; opacity: 0.04; }
+  .level-card:hover { transform: translateY(-4px); box-shadow: 0 16px 40px rgba(0,0,0,0.1); border-color: var(--blue); }
+  .level-card.tle:hover { border-color: var(--gold); }
+  .level-tag {
+    display: inline-block;
+    background: var(--blue-light);
+    color: var(--blue);
+    padding: 0.3rem 0.75rem;
+    border-radius: 2px;
+    font-size: 0.75rem; font-weight: 700;
+    letter-spacing: 0.05em;
+    margin-bottom: 1rem;
+  }
+  .level-card.tle .level-tag { background: #fef8e8; color: #a07010; }
+  .level-name {
+    font-family: 'Syne', sans-serif;
+    font-size: 1.5rem; font-weight: 800;
+    margin-bottom: 0.5rem;
+  }
+  .level-desc { font-size: 0.9rem; color: var(--muted); line-height: 1.5; margin-bottom: 1.5rem; font-weight: 300; }
+  .topics-list { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+  .topic-chip {
+    padding: 0.3rem 0.7rem;
+    background: var(--paper);
+    border: 1px solid var(--border);
+    border-radius: 3px;
+    font-size: 0.78rem; font-weight: 500;
+    color: var(--ink);
+  }
+
+  /* ─── SUBJECTS ─── */
+  .subjects-section {
+    background: var(--blue);
+    color: white;
+    padding: 5rem 3rem;
+  }
+  .subjects-inner { max-width: 1200px; margin: 0 auto; }
+  .subjects-section .section-label { color: var(--gold); }
+  .subjects-section .section-title { color: white; }
+  .subjects-section .section-sub { color: rgba(255,255,255,0.6); }
+
+  .subjects-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+  }
+  .subject-card {
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.12);
+    border-radius: 8px;
+    padding: 1.8rem;
+    transition: all 0.3s;
+  }
+  .subject-card:hover {
+    background: rgba(255,255,255,0.1);
+    transform: translateY(-4px);
+  }
+  .subject-icon {
+    width: 48px; height: 48px;
+    background: var(--gold);
+    border-radius: 6px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.4rem;
+    margin-bottom: 1rem;
+  }
+  .subject-name {
+    font-family: 'Syne', sans-serif;
+    font-size: 1.1rem; font-weight: 700;
+    margin-bottom: 0.5rem;
+  }
+  .subject-desc { font-size: 0.85rem; color: rgba(255,255,255,0.55); line-height: 1.5; font-weight: 300; }
+  .subject-count {
+    margin-top: 1rem; padding-top: 1rem;
+    border-top: 1px solid rgba(255,255,255,0.1);
+    font-size: 0.8rem; color: var(--gold-light);
+    font-weight: 500;
+  }
+
+  /* ─── HOW IT WORKS ─── */
+  .how-section { padding: 5rem 3rem; background: white; }
+  .how-inner { max-width: 1200px; margin: 0 auto; }
+  .steps-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0;
+    position: relative;
+  }
+  .steps-grid::before {
+    content: '';
+    position: absolute; top: 28px; left: 10%; right: 10%; height: 2px;
+    background: repeating-linear-gradient(90deg, var(--gold) 0, var(--gold) 8px, transparent 8px, transparent 16px);
+  }
+  .step-item { text-align: center; padding: 0 1.5rem; }
+  .step-num {
+    width: 56px; height: 56px;
+    border-radius: 50%;
+    background: var(--blue);
+    color: white;
+    font-family: 'Syne', sans-serif;
+    font-size: 1.3rem; font-weight: 800;
+    display: flex; align-items: center; justify-content: center;
+    margin: 0 auto 1.2rem;
+    box-shadow: 0 4px 16px rgba(26,58,107,0.3);
+    position: relative; z-index: 1;
+  }
+  .step-title { font-family: 'Syne', sans-serif; font-size: 1rem; font-weight: 700; margin-bottom: 0.5rem; }
+  .step-desc { font-size: 0.85rem; color: var(--muted); line-height: 1.5; font-weight: 300; }
+
+  /* ─── PRICING ─── */
+  .pricing-section { padding: 5rem 3rem; }
+  .pricing-inner { max-width: 1100px; margin: 0 auto; }
+  .pricing-header { text-align: center; margin-bottom: 3rem; }
+  .pricing-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+    align-items: start;
+  }
+  .price-card {
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 2rem;
+    background: white;
+    transition: all 0.3s;
+  }
+  .price-card.featured {
+    background: var(--blue);
+    color: white;
+    border-color: var(--blue);
+    transform: scale(1.04);
+    box-shadow: 0 20px 60px rgba(26,58,107,0.35);
+  }
+  .price-card:not(.featured):hover { transform: translateY(-4px); box-shadow: 0 12px 32px rgba(0,0,0,0.08); }
+  .price-label { font-size: 0.78rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); margin-bottom: 0.5rem; }
+  .price-card.featured .price-label { color: var(--gold-light); }
+  .price-name { font-family: 'Syne', sans-serif; font-size: 1.3rem; font-weight: 800; margin-bottom: 0.75rem; }
+  .price-amount { display: flex; align-items: baseline; gap: 0.3rem; margin-bottom: 1.5rem; }
+  .price-num { font-family: 'Syne', sans-serif; font-size: 2.5rem; font-weight: 800; }
+  .price-period { font-size: 0.85rem; color: var(--muted); }
+  .price-card.featured .price-period { color: rgba(255,255,255,0.55); }
+  .price-features { list-style: none; margin-bottom: 1.5rem; }
+  .price-features li {
+    padding: 0.5rem 0;
+    font-size: 0.9rem;
+    border-bottom: 1px solid var(--border);
+    display: flex; align-items: center; gap: 0.6rem;
+    color: #3a3a4a;
+  }
+  .price-card.featured .price-features li { border-color: rgba(255,255,255,0.12); color: rgba(255,255,255,0.85); }
+  .price-features li:last-child { border: none; }
+  .check { color: var(--green); font-size: 1rem; }
+  .price-card.featured .check { color: var(--gold-light); }
+  .price-btn {
+    width: 100%; padding: 0.85rem;
+    border-radius: 4px; border: none;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.95rem; font-weight: 600;
+    cursor: pointer; transition: all 0.2s;
+  }
+  .price-btn-outline { background: transparent; border: 2px solid var(--blue); color: var(--blue); }
+  .price-btn-outline:hover { background: var(--blue-light); }
+  .price-btn-filled { background: var(--gold); color: var(--ink); box-shadow: 0 4px 16px rgba(232,184,75,0.4); }
+  .price-btn-filled:hover { background: var(--gold-light); transform: translateY(-1px); }
+
+  /* ─── TESTIMONIALS ─── */
+  .testimonials-section { padding: 5rem 3rem; background: #f0eee8; }
+  .testimonials-inner { max-width: 1200px; margin: 0 auto; }
+  .testimonials-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+  }
+  .testimonial-card {
+    background: white;
+    border-radius: 8px;
+    padding: 1.8rem;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+    transition: transform 0.3s;
+  }
+  .testimonial-card:hover { transform: translateY(-4px); }
+  .stars { color: var(--gold); font-size: 1rem; letter-spacing: 2px; margin-bottom: 1rem; }
+  .testimonial-text { font-size: 0.92rem; line-height: 1.65; color: #3a3a4a; margin-bottom: 1.5rem; font-style: italic; font-weight: 300; }
+  .testimonial-author { display: flex; align-items: center; gap: 0.75rem; }
+  .author-avatar {
+    width: 40px; height: 40px; border-radius: 50%;
+    background: var(--blue-light);
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Syne', sans-serif;
+    font-weight: 800; font-size: 0.9rem;
+    color: var(--blue);
+  }
+  .author-name { font-weight: 600; font-size: 0.9rem; }
+  .author-class { font-size: 0.78rem; color: var(--muted); }
+
+  /* ─── CTA BAND ─── */
+  .cta-band {
+    background: var(--gold);
+    padding: 4rem 3rem;
+    text-align: center;
+  }
+  .cta-band h2 {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(1.8rem, 3.5vw, 2.8rem);
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    color: var(--ink);
+    margin-bottom: 1rem;
+  }
+  .cta-band p { font-size: 1.05rem; color: rgba(10,10,20,0.65); margin-bottom: 2rem; font-weight: 300; }
+  .btn-dark {
+    background: var(--ink);
+    color: white;
+    padding: 0.95rem 2.5rem;
+    border: none; border-radius: 4px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 1rem; font-weight: 600;
+    cursor: pointer; text-decoration: none;
+    display: inline-flex; align-items: center; gap: 0.5rem;
+    transition: all 0.2s;
+  }
+  .btn-dark:hover { background: var(--blue); transform: translateY(-2px); }
+
+  /* ─── FOOTER ─── */
+  footer {
+    background: var(--ink);
+    color: rgba(255,255,255,0.5);
+    padding: 3rem;
+  }
+  .footer-inner {
+    max-width: 1200px; margin: 0 auto;
+    display: grid; grid-template-columns: 2fr 1fr 1fr 1fr;
+    gap: 3rem;
+  }
+  .footer-brand { }
+  .footer-logo {
+    font-family: 'Syne', sans-serif;
+    font-size: 1.3rem; font-weight: 800;
+    color: white; margin-bottom: 0.75rem;
+  }
+  .footer-logo span { color: var(--gold); }
+  .footer-tagline { font-size: 0.85rem; line-height: 1.5; font-weight: 300; }
+  .footer-col h4 { font-size: 0.8rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: white; margin-bottom: 1rem; }
+  .footer-col ul { list-style: none; }
+  .footer-col li { margin-bottom: 0.5rem; }
+  .footer-col a { font-size: 0.85rem; color: rgba(255,255,255,0.45); text-decoration: none; transition: color 0.2s; font-weight: 300; }
+  .footer-col a:hover { color: var(--gold); }
+  .footer-bottom {
+    max-width: 1200px; margin: 2rem auto 0;
+    padding-top: 1.5rem;
+    border-top: 1px solid rgba(255,255,255,0.08);
+    display: flex; justify-content: space-between; align-items: center;
+    font-size: 0.8rem;
+  }
+
+  /* ─── ANIMATIONS ─── */
+  .reveal {
+    opacity: 0; transform: translateY(30px);
+    transition: all 0.7s cubic-bezier(0.23, 1, 0.32, 1);
+  }
+  .reveal.visible { opacity: 1; transform: none; }
+  .reveal-delay-1 { transition-delay: 0.1s; }
+  .reveal-delay-2 { transition-delay: 0.2s; }
+  .reveal-delay-3 { transition-delay: 0.3s; }
+
+  /* ─── MOBILE ─── */
+  @media (max-width: 900px) {
+    nav { padding: 1rem 1.5rem; }
+    .nav-links { display: none; }
+    .hero { grid-template-columns: 1fr; }
+    .hero-right { display: none; }
+    .hero-left { padding: 4rem 1.5rem 3rem; }
+    .levels-grid, .subjects-grid, .testimonials-grid { grid-template-columns: 1fr; }
+    .steps-grid { grid-template-columns: 1fr 1fr; }
+    .steps-grid::before { display: none; }
+    .pricing-grid { grid-template-columns: 1fr; }
+    .price-card.featured { transform: none; }
+    .footer-inner { grid-template-columns: 1fr 1fr; }
+    .section { padding: 3.5rem 1.5rem; }
+    .subjects-section, .how-section, .testimonials-section, .pricing-section { padding: 3.5rem 1.5rem; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">Math<span>Phys</span> Elite</div>
+  <ul class="nav-links">
+    <li><a href="#niveaux">Niveaux</a></li>
+    <li><a href="#matieres">Matières</a></li>
+    <li><a href="#fonctionnement">Comment ça marche</a></li>
+    <li><a href="#tarifs">Tarifs</a></li>
+    <li><a href="#inscription" class="nav-cta">S'inscrire</a></li>
+  </ul>
+  <a href="#inscription" class="btn-primary" style="display:none; padding:0.5rem 1.2rem; font-size:0.85rem;">S'inscrire</a>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-left">
+    <div class="hero-badge">🎓 Cours en ligne · Certifiés</div>
+    <h1 class="hero-title">
+      Maîtrisez les<br>
+      <span class="underline-gold">Maths</span> &amp; la<br>
+      <span class="accent">Physique</span>
+    </h1>
+    <p class="hero-desc">
+      Cours interactifs de qualité supérieure pour les élèves de 3ème et Terminale A/D. 
+      Progressez à votre rythme avec nos professeurs expérimentés et des exercices corrigés.
+    </p>
+    <div class="hero-actions">
+      <a href="#inscription" class="btn-primary">Commencer gratuitement →</a>
+      <a href="#fonctionnement" class="btn-secondary">▶ Voir comment ça marche</a>
+    </div>
+    <div class="hero-stats">
+      <div class="stat-item">
+        <span class="stat-num">2 400+</span>
+        <span class="stat-label">Élèves inscrits</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-num">98%</span>
+        <span class="stat-label">Taux de satisfaction</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-num">350+</span>
+        <span class="stat-label">Exercices corrigés</span>
+      </div>
+    </div>
+  </div>
+  <div class="hero-right">
+    <div class="formula-board">
+      <div class="board-tabs">
+        <div class="board-tab active">Mathématiques</div>
+        <div class="board-tab" id="tab-phys">Physique</div>
+      </div>
+      <div id="formula-content">
+        <div class="formula-line" style="animation-delay:0.1s">
+          <div><div class="label">Théorème de Pythagore</div><div class="expr">a² + b² = c²</div></div>
+          <div class="cat">3ème</div>
+        </div>
+        <div class="formula-line" style="animation-delay:0.2s">
+          <div><div class="label">Équation du 2nd degré</div><div class="expr">ax² + bx + c = 0</div></div>
+          <div class="cat">Tle</div>
+        </div>
+        <div class="formula-line" style="animation-delay:0.3s">
+          <div><div class="label">Dérivée d'une fonction</div><div class="expr">f'(x) = lim Δf/Δx</div></div>
+          <div class="cat">Tle</div>
+        </div>
+        <div class="formula-line" style="animation-delay:0.4s">
+          <div><div class="label">Intégrale</div><div class="expr">∫ f(x)dx = F(x) + C</div></div>
+          <div class="cat">Tle A</div>
+        </div>
+        <div class="formula-line" style="animation-delay:0.5s">
+          <div><div class="label">Limite fondamentale</div><div class="expr">lim(sin x / x) = 1</div></div>
+          <div class="cat">Tle D</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- NIVEAUX -->
+<section class="section" id="niveaux">
+  <div class="section-label">Nos niveaux</div>
+  <h2 class="section-title reveal">Un programme adapté<br>à chaque classe</h2>
+  <p class="section-sub reveal reveal-delay-1">Des cours structurés, progressifs et alignés sur les programmes officiels pour la 3ème et les Terminales des séries A et D.</p>
+  <div class="levels-grid">
+    <div class="level-card reveal reveal-delay-1">
+      <div class="level-tag">COLLÈGE</div>
+      <div class="level-name">3ème</div>
+      <p class="level-desc">Consolider les bases et préparer le BEPC avec des cours complets en algèbre, géométrie et physique fondamentale.</p>
+      <div class="topics-list">
+        <span class="topic-chip">Algèbre</span>
+        <span class="topic-chip">Géométrie</span>
+        <span class="topic-chip">Statistiques</span>
+        <span class="topic-chip">Mécanique</span>
+        <span class="topic-chip">Électricité</span>
+        <span class="topic-chip">Optique</span>
+        <span class="topic-chip">Trigonométrie</span>
+        <span class="topic-chip">BEPC Annales</span>
+      </div>
+    </div>
+    <div class="level-card tle reveal reveal-delay-2">
+      <div class="level-tag">LYCÉE — SÉRIE A</div>
+      <div class="level-name">Terminale A</div>
+      <p class="level-desc">Approfondissement en analyse et initiation aux probabilités. Renforcement pour le BAC série littéraire avec mathématiques.</p>
+      <div class="topics-list">
+        <span class="topic-chip">Fonctions</span>
+        <span class="topic-chip">Suites</span>
+        <span class="topic-chip">Probabilités</span>
+        <span class="topic-chip">Logarithmes</span>
+        <span class="topic-chip">Statistiques</span>
+        <span class="topic-chip">Géométrie analytique</span>
+        <span class="topic-chip">BAC Annales</span>
+      </div>
+    </div>
+    <div class="level-card reveal reveal-delay-2">
+      <div class="level-tag">LYCÉE — SÉRIE D</div>
+      <div class="level-name">Terminale D</div>
+      <p class="level-desc">Programme complet en mathématiques avancées et physique-chimie pour la série scientifique avec biologie.</p>
+      <div class="topics-list">
+        <span class="topic-chip">Dérivation</span>
+        <span class="topic-chip">Intégration</span>
+        <span class="topic-chip">Vecteurs</span>
+        <span class="topic-chip">Électromagnétisme</span>
+        <span class="topic-chip">Mécanique avancée</span>
+        <span class="topic-chip">Cinétique</span>
+        <span class="topic-chip">Optique ondulatoire</span>
+        <span class="topic-chip">BAC Annales</span>
+      </div>
+    </div>
+    <div class="level-card reveal reveal-delay-3" style="background: var(--blue-light); border-color: var(--blue-mid);">
+      <div class="level-tag" style="background: #c8d8f4; color: var(--blue);">RÉVISIONS INTENSIVES</div>
+      <div class="level-name" style="font-size: 1.2rem;">Préparation Examens</div>
+      <p class="level-desc">Sessions de révisions ciblées avant le BEPC et le BAC. Corrections détaillées d'annales et fiches de révision.</p>
+      <div class="topics-list">
+        <span class="topic-chip">Annales BEPC</span>
+        <span class="topic-chip">Annales BAC</span>
+        <span class="topic-chip">Fiches résumé</span>
+        <span class="topic-chip">QCM entraînement</span>
+        <span class="topic-chip">Examens blancs</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MATIÈRES -->
+<section class="subjects-section" id="matieres">
+  <div class="subjects-inner">
+    <div class="section-label">Nos matières</div>
+    <h2 class="section-title" style="color:white;">Tout ce dont vous<br>avez besoin</h2>
+    <p class="section-sub">Des cours vidéo, des fiches de synthèse, des exercices corrigés et des quiz interactifs pour chaque chapitre du programme.</p>
+    <div class="subjects-grid">
+      <div class="subject-card">
+        <div class="subject-icon">∑</div>
+        <div class="subject-name">Algèbre & Analyse</div>
+        <p class="subject-desc">Équations, fonctions, suites, limites, dérivées, intégrales. Du plus simple au plus complexe.</p>
+        <div class="subject-count">📚 86 leçons · 240 exercices</div>
+      </div>
+      <div class="subject-card">
+        <div class="subject-icon">△</div>
+        <div class="subject-name">Géométrie</div>
+        <p class="subject-desc">Géométrie plane, dans l'espace, analytique, trigonométrie et transformations géométriques.</p>
+        <div class="subject-count">📚 54 leçons · 180 exercices</div>
+      </div>
+      <div class="subject-card">
+        <div class="subject-icon">%</div>
+        <div class="subject-name">Probabilités & Stats</div>
+        <p class="subject-desc">Statistiques descriptives, probabilités, loi des grands nombres, espérance et variance.</p>
+        <div class="subject-count">📚 32 leçons · 95 exercices</div>
+      </div>
+      <div class="subject-card">
+        <div class="subject-icon">⚡</div>
+        <div class="subject-name">Électricité</div>
+        <p class="subject-desc">Circuits électriques, lois de Kirchhoff, condensateurs, régimes transitoires et courant alternatif.</p>
+        <div class="subject-count">📚 48 leçons · 130 exercices</div>
+      </div>
+      <div class="subject-card">
+        <div class="subject-icon">🔭</div>
+        <div class="subject-name">Mécanique</div>
+        <p class="subject-desc">Cinématique, dynamique, lois de Newton, travail et énergie, chute libre et mouvement circulaire.</p>
+        <div class="subject-count">📚 62 leçons · 200 exercices</div>
+      </div>
+      <div class="subject-card">
+        <div class="subject-icon">💡</div>
+        <div class="subject-name">Optique</div>
+        <p class="subject-desc">Optique géométrique, réflexion, réfraction, lentilles, miroirs et optique ondulatoire.</p>
+        <div class="subject-count">📚 28 leçons · 80 exercices</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- COMMENT ÇA MARCHE -->
+<section class="how-section" id="fonctionnement">
+  <div class="how-inner">
+    <div style="text-align:center; margin-bottom:3rem;">
+      <div class="section-label">Méthode</div>
+      <h2 class="section-title">Comment ça fonctionne</h2>
+      <p class="section-sub" style="margin: 0.5rem auto 0; text-align:center;">4 étapes simples pour maîtriser les maths et la physique.</p>
+    </div>
+    <div class="steps-grid">
+      <div class="step-item reveal">
+        <div class="step-num">1</div>
+        <div class="step-title">Inscrivez-vous</div>
+        <p class="step-desc">Créez votre compte gratuitement en quelques secondes. Choisissez votre niveau et vos matières.</p>
+      </div>
+      <div class="step-item reveal reveal-delay-1">
+        <div class="step-num">2</div>
+        <div class="step-title">Regardez les cours</div>
+        <p class="step-desc">Accédez aux vidéos HD, fiches de cours et explications détaillées par chapitre.</p>
+      </div>
+      <div class="step-item reveal reveal-delay-2">
+        <div class="step-num">3</div>
+        <div class="step-title">Pratiquez</div>
+        <p class="step-desc">Faites les exercices corrigés, les quiz et les examens blancs pour tester vos connaissances.</p>
+      </div>
+      <div class="step-item reveal reveal-delay-3">
+        <div class="step-num">4</div>
+        <div class="step-title">Progressez</div>
+        <p class="step-desc">Suivez votre progression, identifiez vos lacunes et obtenez des recommandations personnalisées.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TARIFS -->
+<section class="pricing-section" id="tarifs">
+  <div class="pricing-inner">
+    <div class="pricing-header">
+      <div class="section-label">Tarifs</div>
+      <h2 class="section-title">Des forfaits pour tous</h2>
+      <p class="section-sub" style="margin: 0.5rem auto 0; text-align:center; max-width:500px;">Commencez gratuitement, évoluez selon vos besoins.</p>
+    </div>
+    <div class="pricing-grid">
+      <!-- Free -->
+      <div class="price-card reveal">
+        <div class="price-label">Starter</div>
+        <div class="price-name">Gratuit</div>
+        <div class="price-amount"><span class="price-num">0</span><span class="price-period">FCFA / mois</span></div>
+        <ul class="price-features">
+          <li><span class="check">✓</span> 2 chapitres par matière</li>
+          <li><span class="check">✓</span> 20 exercices corrigés</li>
+          <li><span class="check">✓</span> Quiz de révision</li>
+          <li><span class="check">✓</span> Accès mobile</li>
+          <li style="color:var(--muted)"><span style="color:var(--muted)">✗</span> Cours vidéo HD</li>
+          <li style="color:var(--muted)"><span style="color:var(--muted)">✗</span> Annales corrigées</li>
+        </ul>
+        <button class="price-btn price-btn-outline">Commencer</button>
+      </div>
+      <!-- Standard (featured) -->
+      <div class="price-card featured reveal reveal-delay-1">
+        <div class="price-label">⭐ Recommandé</div>
+        <div class="price-name">Essentiel</div>
+        <div class="price-amount"><span class="price-num">3 500</span><span class="price-period">FCFA / mois</span></div>
+        <ul class="price-features">
+          <li><span class="check">✓</span> Tous les cours vidéo HD</li>
+          <li><span class="check">✓</span> Exercices illimités</li>
+          <li><span class="check">✓</span> Toutes les annales BEPC/BAC</li>
+          <li><span class="check">✓</span> Fiches de révision PDF</li>
+          <li><span class="check">✓</span> Examens blancs</li>
+          <li><span class="check">✓</span> Suivi de progression</li>
+        </ul>
+        <button class="price-btn price-btn-filled">Choisir ce forfait</button>
+      </div>
+      <!-- Premium -->
+      <div class="price-card reveal reveal-delay-2">
+        <div class="price-label">Premium</div>
+        <div class="price-name">Excellence</div>
+        <div class="price-amount"><span class="price-num">7 000</span><span class="price-period">FCFA / mois</span></div>
+        <ul class="price-features">
+          <li><span class="check">✓</span> Tout le forfait Essentiel</li>
+          <li><span class="check">✓</span> Sessions de tutorat en direct</li>
+          <li><span class="check">✓</span> Correction de devoirs</li>
+          <li><span class="check">✓</span> Plan d'étude personnalisé</li>
+          <li><span class="check">✓</span> Chat avec un prof</li>
+          <li><span class="check">✓</span> Certificat de réussite</li>
+        </ul>
+        <button class="price-btn price-btn-outline">Choisir ce forfait</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TÉMOIGNAGES -->
+<section class="testimonials-section">
+  <div class="testimonials-inner">
+    <div style="text-align:center; margin-bottom:3rem;">
+      <div class="section-label">Témoignages</div>
+      <h2 class="section-title">Ce que disent nos élèves</h2>
+    </div>
+    <div class="testimonials-grid">
+      <div class="testimonial-card reveal">
+        <div class="stars">★★★★★</div>
+        <p class="testimonial-text">« Grâce à MathPhys Elite, j'ai eu 16/20 au BAC en maths. Les explications sont claires, les exercices bien choisis. Je recommande vraiment à tous les Tle D. »</p>
+        <div class="testimonial-author">
+          <div class="author-avatar">AK</div>
+          <div>
+            <div class="author-name">Aminata Konaté</div>
+            <div class="author-class">Terminale D · Abidjan</div>
+          </div>
+        </div>
+      </div>
+      <div class="testimonial-card reveal reveal-delay-1">
+        <div class="stars">★★★★★</div>
+        <p class="testimonial-text">« J'avais du mal en physique mais avec les vidéos et les exercices corrigés pas à pas, tout est devenu clair. J'ai validé mon BEPC avec mention ! »</p>
+        <div class="testimonial-author">
+          <div class="author-avatar">SB</div>
+          <div>
+            <div class="author-name">Seydou Bamba</div>
+            <div class="author-class">3ème · Bouaké</div>
+          </div>
+        </div>
+      </div>
+      <div class="testimonial-card reveal reveal-delay-2">
+        <div class="stars">★★★★★</div>
+        <p class="testimonial-text">« Le suivi personnalisé est excellent. Mon professeur répond rapidement à mes questions et j'ai progressé de 8 points en algèbre en deux mois seulement. »</p>
+        <div class="testimonial-author">
+          <div class="author-avatar">FD</div>
+          <div>
+            <div class="author-name">Fatou Diallo</div>
+            <div class="author-class">Terminale A · Dakar</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA BAND -->
+<section class="cta-band" id="inscription">
+  <h2>Prêt à exceller en Maths et Physique ?</h2>
+  <p>Rejoignez 2 400 élèves qui font confiance à MathPhys Elite. Inscription gratuite, sans engagement.</p>
+  <a href="#" class="btn-dark">Créer mon compte gratuit →</a>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <div class="footer-logo">Math<span>Phys</span> Elite</div>
+      <p class="footer-tagline">La référence des cours en ligne de mathématiques et physique pour les élèves de 3ème et Terminale A/D.</p>
+    </div>
+    <div class="footer-col">
+      <h4>Niveaux</h4>
+      <ul>
+        <li><a href="#">3ème — BEPC</a></li>
+        <li><a href="#">Terminale A</a></li>
+        <li><a href="#">Terminale D</a></li>
+        <li><a href="#">Révisions Examens</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Matières</h4>
+      <ul>
+        <li><a href="#">Mathématiques</a></li>
+        <li><a href="#">Physique</a></li>
+        <li><a href="#">Chimie</a></li>
+        <li><a href="#">Exercices &amp; Annales</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Informations</h4>
+      <ul>
+        <li><a href="#">À propos</a></li>
+        <li><a href="#">Tarifs</a></li>
+        <li><a href="#">Contact</a></li>
+        <li><a href="#">FAQ</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2024 MathPhys Elite. Tous droits réservés.</span>
+    <span>Fait avec ❤️ pour les élèves africains</span>
+  </div>
+</footer>
+
+<script>
+  // Tab switch on formula board
+  const tabPhys = document.getElementById('tab-phys');
+  const tabs = document.querySelectorAll('.board-tab');
+  const formulaContent = document.getElementById('formula-content');
+
+  const contentMap = {
+    math: `
+      <div class="formula-line" style="animation-delay:0.1s">
+        <div><div class="label">Théorème de Pythagore</div><div class="expr">a² + b² = c²</div></div>
+        <div class="cat">3ème</div>
+      </div>
+      <div class="formula-line" style="animation-delay:0.2s">
+        <div><div class="label">Équation du 2nd degré</div><div class="expr">ax² + bx + c = 0</div></div>
+        <div class="cat">Tle</div>
+      </div>
+      <div class="formula-line" style="animation-delay:0.3s">
+        <div><div class="label">Dérivée d'une fonction</div><div class="expr">f'(x) = lim Δf/Δx</div></div>
+        <div class="cat">Tle</div>
+      </div>
+      <div class="formula-line" style="animation-delay:0.4s">
+        <div><div class="label">Intégrale</div><div class="expr">∫ f(x)dx = F(x) + C</div></div>
+        <div class="cat">Tle A</div>
+      </div>
+      <div class="formula-line" style="animation-delay:0.5s">
+        <div><div class="label">Limite fondamentale</div><div class="expr">lim(sin x / x) = 1</div></div>
+        <div class="cat">Tle D</div>
+      </div>`,
+    phys: `
+      <div class="formula-line" style="animation-delay:0.1s">
+        <div><div class="label">Loi de Newton</div><div class="expr">F = m × a</div></div>
+        <div class="cat">3ème</div>
+      </div>
+      <div class="formula-line" style="animation-delay:0.2s">
+        <div><div class="label">Énergie cinétique</div><div class="expr">Ec = ½ mv²</div></div>
+        <div class="cat">Tle D</div>
+      </div>
+      <div class="formula-line" style="animation-delay:0.3s">
+        <div><div class="label">Loi d'Ohm</div><div class="expr">U = R × I</div></div>
+        <div class="cat">3ème</div>
+      </div>
+      <div class="formula-line" style="animation-delay:0.4s">
+        <div><div class="label">Réfraction (Snell)</div><div class="expr">n₁ sin θ₁ = n₂ sin θ₂</div></div>
+        <div class="cat">Tle D</div>
+      </div>
+      <div class="formula-line" style="animation-delay:0.5s">
+        <div><div class="label">Vitesse de la lumière</div><div class="expr">c = 3 × 10⁸ m/s</div></div>
+        <div class="cat">Tle</div>
+      </div>`
+  };
+
+  tabs.forEach((tab, i) => {
+    tab.addEventListener('click', () => {
+      tabs.forEach(t => t.classList.remove('active'));
+      tab.classList.add('active');
+      formulaContent.innerHTML = i === 0 ? contentMap.math : contentMap.phys;
+    });
+  });
+
+  // Scroll reveal
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+</script>
+</body>
+</html>
